@@ -1,0 +1,100 @@
+.header_logo{
+	
+}
+
+.header_menu{
+
+}
+
+.header_link{
+	padding: 30px 20px;
+	font-weight: 600;
+}
+
+.header_action{
+	display: flex;
+	align-items: center;
+}
+
+.header_action i{
+	font-size: 23px;
+	margin-left: 8px;
+}
+
+/*section*/
+.section_detail{
+	padding: 20px 0;
+}
+
+.section_intro{
+	padding: 40px 0 60px 0;
+}
+
+/*section_reason*/
+.section_reason{
+	padding: 40px 0 50px 0;
+}
+
+.reason_content-left{
+	padding: 40px;
+	margin-bottom: 20px;
+}
+
+.reason_content-right{
+	padding: 40px;
+	margin-bottom: 20px;
+	text-align: right;
+}
+
+/*comment*/
+.section_comment{
+	padding: 40px 0;
+}
+
+/*news*/
+.section_news{
+	padding: 40px 0 50px 0;
+}
+
+.news-box{
+	padding: 15px;
+	border: 1px solid #fffdfd;
+    box-shadow: 0 1px 5px 0 rgb(0 0 0 / 5%);
+    transition: 0.3s;
+}
+
+.news-box:hover{
+	box-shadow: 0 10px 20px 0 rgb(0 0 0 / 5%);
+	transition: 0.3s;
+}
+
+/*footer*/
+.footer_top{
+	padding: 70px 0;
+	background-color: #333333;
+	color: white;
+}
+
+.footer_bomttom{
+	padding: 30px 0;
+	background-color: #2c2c2c;
+	color: white;
+}
+
+.footer_link ul li{
+	padding-bottom: 10px;
+}
+
+/*main compnent*/
+.title-main{
+	margin-bottom: 40px;
+	text-transform: uppercase;
+	font-size: 30px;
+	font-weight: 500;
+	text-align: center;
+}
+
+
+.slick-slide{
+	margin: 0 20px;
+}

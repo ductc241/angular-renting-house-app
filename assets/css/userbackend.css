@@ -1,0 +1,43 @@
+*{
+	font-family: 'Roboto', sans-serif;
+}
+
+body{
+	background-color: #f3f4f6;
+}
+
+.sidebar{
+	height: 100%;
+	position: fixed;
+	background-color: white;
+}
+
+.menu_title{
+	text-transform: uppercase;
+	color: #9a9a9a;
+	word-spacing: 2px;
+	margin-bottom: 8px;
+}
+
+.menu_group{
+	font-size: 17px;
+	margin-bottom: 30px;
+}
+
+.menu_link{
+	padding: 10px 15px;
+	margin-bottom: 3px;
+	font-weight: 300;
+}
+
+.menu_link:hover{
+	color: blue;
+}
+
+.menu_link i{
+	margin-right: 5px;
+}
+
+.main_content{
+	margin-left: 263px;
+}
