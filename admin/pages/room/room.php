@@ -111,6 +111,9 @@
                     <button type="button" class="btn btn-default" data-toggle="modal" data-role="detail" data-target="#modal-lg" data-id=<?=$room['room_id']?>>
                       Chi tiết
                     </button>
+                    <button type="button" class="btn btn-danger">
+                      Xóa
+                    </button>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -128,12 +131,13 @@
                 </button>
               </div>
               <div class="modal-body">
-                <h5>Người đăng tin: <span id="user_id"></span></h5>
-                <h5>Địa chỉ: <span id="address"></span></h5>
-                <h5>Ngày đăng: <span id="day_start"></span></h5>
-                <h5>Ngày hết hạn: <span id="day_end"></span></h5>
-                <h5>Tổng quan: <p id="summary"></p></h5>
-                <h5>Giá dịch vụ</h5>
+                <h5 class="text-primary">Người đăng tin: <span class="text-dark" id="user_id"></span></h5>
+                <h5 class="text-primary">Địa chỉ: <span class="text-dark" id="address"></span></h5>
+                <h5 class="text-primary">Thuộc: <span class="text-dark" id="loca"></span><span class="text-dark">, Hà Nội</span></h5>
+                <h5 class="text-primary">Ngày đăng: <span class="text-dark" id="day_start"></span></h5>
+                <h5 class="text-primary">Ngày hết hạn: <span class="text-dark" id="day_end"></span></h5>
+                <h5 class="text-primary">Tổng quan: <p class="text-dark" id="summary"></p></h5>
+                <h5 class="text-primary">Giá dịch vụ</h5>
                 <div class="row">
                   <div class="col">
                     <span>Giá điện: <span id="electric"></span>đ/số</span>
@@ -215,9 +219,10 @@
             $(".modal-title").text(result['room_name']);
             $("#user_id").text(result['username']);;
             $("#address").text(result['address']);;
+            $("#loca").text(result['locaname']);;
             $("#day_start").text(result['day_start']);;
             $("#day_end").text(result['day_end']);;
-            $("#summary").text(result['summary']);;
+            $("#summary").html(result['summary']);;
 
             $("#electric").text(result['electric']);;
             $("#water").text(result['water']);;

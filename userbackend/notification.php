@@ -1,3 +1,14 @@
+<?php
+	require "../admin/dao/pdo.php";
+	require "../admin/dao/notify.php";
+	session_start();
+
+	// $notify = notify_select($_SESSION['user']['user_id']);
+	$notify_cencored = notify_cencored($_SESSION['user']['user_id']);
+	$notify_view = notify_view($_SESSION['user']['user_id']);
+	$notify_schedule = notify_schedule($_SESSION['user']['user_id']);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,16 +41,65 @@
 			<span class="">Thông báo</span>
 		</div>
 
-		<div class="p-5 bg-white rounded-lg mt-5">
-			<div class="border-b flex justify-between">
-				<a href="#" class="font-bold text-lg uppercase">Chung cư mini cho thuê tại Phạm Văn Đồng</a>
-				<p>Ngày: 5/4/2021</p>
+		<div class="grid grid-cols-12 gap-10 mt-5">
+			<div class="col-span-4">
+				<h1 class="text-xl font-bold">Thông báo duyệt bài</h1>
+				<?php foreach ($notify_cencored as $result): ?>
+					<div class="p-5 bg-white rounded-lg mt-5">
+						<div class="border-b flex justify-between">
+							<p href="#" class="font-bold text-lg uppercase">Thông báo</p>
+							<p>Ngày: <?= $result['create_at'] ?></p>
+						</div>
+						<div class="mt-5">
+							<a  class="text-red-500" href="../detail.php?id=<?=$result['room_id']?>">Bài đăng: <?= $result['room_name'] ?></a>
+							<p class="mt-2"><?= $result['message'] ?></p>
+						</div>
+					</div>
+				<?php endforeach; ?>
 			</div>
-			<div class="mt-5">
-				<p class="mb-2">Xác nhận từ admin: tacongduc</p>
-				<p>Tin của bạn đã được admin xác nhận thông qua và đã được hiện thị trên website của chúng tôi.</p>
+
+			<div class="col-span-4">
+				<h1 class="text-xl font-bold">Thông báo khách xem phòng</h1>
+				<?php foreach ($notify_view as $result): ?>
+					<div class="p-5 bg-white rounded-lg mt-5">
+						<div class="border-b flex justify-between">
+							<p href="#" class="font-bold text-lg uppercase">Thông báo</p>
+							<p>Ngày: <?= $result['create_at'] ?></p>
+						</div>
+						<div class="mt-5">
+							<a  class="text-red-500" href="../detail.php?id=<?=$result['room_id']?>">Bài đăng: <?= $result['room_name'] ?></a>
+							<p class="mt-2"><?= $result['message'] ?></p>
+							<?php
+								$id = (int)$result['renter'];
+								$sql = "select * from user where user_id = $id";
+								$renter = pdo_query_one($sql);
+								echo "<p class='mt-2'> Tên: " . $renter['user_name'] . "</p>";
+								echo "<p class='mt-2'> SĐT: " . $renter['phone'] . "</p>";
+							?>
+						</div>
+					</div>
+				<?php endforeach; ?>
+			</div>
+
+			<div class="col-span-4">
+				<h1 class="text-xl font-bold">Thông báo lịch đã đặt</h1>
+				<?php foreach ($notify_schedule as $result): ?>
+					<div class="p-5 bg-white rounded-lg mt-5">
+						<div class="border-b flex justify-between">
+							<p href="#" class="font-bold text-lg uppercase">Thông báo</p>
+							<p>Ngày: <?= $result['create_at'] ?></p>
+						</div>
+						<div class="mt-5">
+							<a  class="text-red-500" href="../detail.php?id=<?=$result['room_id']?>">Bài đăng: <?= $result['room_name'] ?></a>
+							<p class="mt-2"><?= $result['message'] ?></p>
+						</div>
+					</div>
+				<?php endforeach; ?>
 			</div>
 		</div>
+
+
+		
 	</div>
 </body>
 </html>

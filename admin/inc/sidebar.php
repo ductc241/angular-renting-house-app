@@ -25,7 +25,7 @@
           <a href="#" class="nav-link active">
             <i class="nav-icon fas fa-th"></i>
             <p>
-              Danh mục
+              Thông kê
               <i class="right fas fa-angle-left"></i>
             </p>  
           </a>

@@ -1,9 +1,14 @@
 <?php 
+  	require "./admin/dao/user.php";
 	session_start();
 
 	if(isset($_GET['logout'])) {
     	session_destroy();
     	header('location:./index.php');
+ 	}
+
+ 	if(isset($_SESSION['user'])){
+ 		$user =  user_select_one($_SESSION['user']['user_id']);
  	}
 ?>
 
@@ -49,7 +54,7 @@
 				<div class="feature_option">
 					<p class="text-2xl font-semibold text-gray-500">Tìm Kiếm Nhanh</p>
 					<form action="#">				
-						<input type="text" placeholder="Nhập từ khóa ....">
+						<!-- <input type="text" placeholder="Nhập từ khóa ...."> -->
 
 						<select>
 							<option value="">Vị trí</option>

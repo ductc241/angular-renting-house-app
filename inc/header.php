@@ -14,7 +14,7 @@
 				<div class="header_user">
 					<ul class="flex items-center relative">
 						<?php if(isset($_SESSION['user'])):?>
-							<img src="./assets/images/users/user.png" class="w-11 rounded-full mr-2" alt="" >
+							<img src="./assets/images/users/<?= $user['avatar'] ?>" class="w-11 h-11 rounded-full mr-2" alt="" >
 							
 							<li class="font-semibold">
 								<a href=""><?= $_SESSION['user']['user_name'] ?></a>
@@ -25,7 +25,7 @@
 						<div class="user_form">
 							<li>
 								<i class="fas fa-plus" style="margin-right: 7px;"></i>
-								<a href="#">Đăng tin</a>
+								<a href="./userbackend/create.php">Đăng tin</a>
 							</li>
 							<li>
 								<i class="fas fa-user" style="margin-right: 7px;"></i>

@@ -70,7 +70,7 @@
 					<p class="capitalize text-lg font-medium border-b pb-3">new customers</p>
 					<p class="my-3 text-sm text-gray-600">Creating an account has many benefits: check out faster, keep more than one address, track orders and more.</p>
 					<button type="submit">
-						<a href="registry.html">Create an account</a>
+						<a href="registry.php">Create an account</a>
 					</button>
 				</div>
 			</div>

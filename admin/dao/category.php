@@ -1,6 +1,11 @@
 <?php
 	require_once "pdo.php";
 
+	function cate_select_all() {
+		$sql = "select * from category";
+		return pdo_query($sql);
+	}
+
 	function cate_select() {
 		$sql = "select category.*, COUNT(category.cate_id) AS quantity from category join room on category.cate_id = room.cate_id where room.censorship = 1 group by category.cate_id";
 		return pdo_query($sql);

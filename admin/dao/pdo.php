@@ -8,7 +8,6 @@
 		return $conn;	
 	}
 
-// kết nối đến cơ sở dữ liệu
 	function pdo_execute($sql){
 		try{
 			$conn = pdo_get_connection();
@@ -23,7 +22,6 @@
 		}	
 	}
 
-// thực hiện lệnh sql : lệnh nào cũng thưucj hiện đc
 	function pdo_query($sql){
 		try{
 			$conn = pdo_get_connection();
@@ -40,7 +38,6 @@
 		}
 	}
 
- //lấy ra nhiều giá trị 
 	function pdo_query_one($sql){
 		try{
 			$conn = pdo_get_connection();
@@ -57,5 +54,4 @@
 		}
 	}
 
-//lệnh sql để lấy ra 1 giá trị
 ?>

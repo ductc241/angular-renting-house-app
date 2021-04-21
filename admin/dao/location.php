@@ -1,6 +1,11 @@
 <?php
 	require_once "pdo.php";
 
+	function loca_select_all() {
+		$sql = "select * from location";
+		return pdo_query($sql);
+	}
+
 	function loca_select() {
 		$sql = "select location.*, COUNT(location.loca_id) AS quantity from location join room on location.loca_id = room.loca_id WHERE room.censorship = 1 group by location.loca_id";
 		return pdo_query($sql);

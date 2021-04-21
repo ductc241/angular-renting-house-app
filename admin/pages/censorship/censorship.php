@@ -8,8 +8,7 @@
   // censor
   if(isset($_GET['id'])) {
     $room_id = $_GET['id'];
-    // censored($room_id);
-    send_notify($_SESSION['admin']['admin_id'], $room_id);
+    censored($room_id);
   }
 ?>
 

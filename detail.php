@@ -1,5 +1,29 @@
 <?php
 	session_start();
+	require_once "./admin/dao/schedule.php";
+	require_once "./admin/dao/room.php";
+	require_once "./admin/dao/user.php";
+	require_once "./admin/dao/album.php";
+
+
+	$user =  user_select_one($_SESSION['user']['user_id']);
+
+	if(isset($_GET['id'])){
+		$id = $_GET['id'];
+		$room = room_select_one($id);
+		$album = album_select($id);
+		$landlord = room_select_landlord($id);
+	}
+
+	if(isset($_POST['setup'])){
+		$room_id = $_GET['id'];
+		$landlords = user_select_roomid($room_id)['user_id'];
+		$user_id = $_SESSION['user']['user_id'];
+		$date = $_POST['schedule'];
+
+		schedule_insert($room_id, $user_id, $date);
+		schedule_notify($date, $landlords, $user_id, $room_id);
+	}
 ?>
 
 <!DOCTYPE html>
@@ -45,18 +69,11 @@
 			<div class="grid grid-cols-12">
 				<div class="col-span-7">
 					<div class="owl-carousel owl-theme">
-						<div class="item">
-							<img src="./assets/images/home.jpg" alt="anh minh hoa" class="rounded-xl">
-						</div>
-						<div class="item">
-							<img src="./assets/images/home.jpg" alt="anh minh hoa" class="rounded-xl">
-						</div>
-						<div class="item">
-							<img src="./assets/images/home.jpg" alt="anh minh hoa" class="rounded-xl">
-						</div>
-						<div class="item">
-							<img src="./assets/images/home.jpg" alt="anh minh hoa" class="rounded-xl">
-						</div>
+						<?php foreach ($album as $img) : ?>
+							<div class="item">
+								<img src="./assets/images/album/<?=$room['room_id']?>/<?=$img['image']?>" alt="anh minh hoa" class="rounded-xl">
+							</div>
+						<?php endforeach ; ?>
 					</div>
 				</div>
 
@@ -64,18 +81,18 @@
 					<p class="text-2xl font-bold">Thông tin chung</p>
 					<div class="flex flex-col justify-between h-full">
 						<ul class="mt-3">
-							<li class="font-semibold mb-3 text-gray-500"><span class="text-lg text-blue-700">Địa chỉ: </span>Số 31B, Ngách 189/43 Nguyễn Ngọc Vũ</li>
-							<li class="font-semibold mb-3 text-gray-500"><span class="text-lg text-blue-700">Thuộc: </span>Cầu giấy, Hà nội</li>
-							<li class="font-semibold mb-3 text-gray-500"><span class="text-lg text-blue-700">Giá: </span> 3,500,000đ/tháng</li>
-							<li class="font-semibold mb-3 text-gray-500"><span class="text-lg text-blue-700">Diện tích: </span> 30m2</li>
+							<li class="font-semibold mb-3 text-gray-500"><span class="text-lg text-blue-700">Địa chỉ: </span><?= $room['address'] ?></li>
+							<li class="font-semibold mb-3 text-gray-500"><span class="text-lg text-blue-700">Thuộc: </span><?= $room['locaname'] ?> , Hà nội</li>
+							<li class="font-semibold mb-3 text-gray-500"><span class="text-lg text-blue-700">Giá: </span><?= number_format($room['price']) ?>đ/tháng</li>
+							<li class="font-semibold mb-3 text-gray-500"><span class="text-lg text-blue-700">Diện tích: </span> <?= $room['area'] ?>m2</li>
 						</ul>
 
 						<div class="pr-10">
 							<p class="text-2xl font-bold mb-5">Đặt lịch xem phòng</p>
-							<form action="">
-								<input type="date" name="" id="" class="w-full border p-3 rounded-lg">
-								<button type="submit">
-									<a href="registry.html">Đặt lịch hẹn</a>
+							<form action="" method="post">
+								<input type="date" name="schedule" id="schedule" class="w-full border p-3 rounded-lg">
+								<button name="setup">
+									<span class="text-white">Đặt lịch hẹn</span>
 								</button>
 							</form>
 						</div>
@@ -86,12 +103,12 @@
 			<div class="mt-12">
 				<div class="grid grid-cols-12 gap-5">
 					<div class="col-span-8 px-9">
-						<p class="font-semibold text-xl uppercase text-purple-500 mb-1">Số 31B, Ngách 189/43 Nguyễn Ngọc Vũ</p>
+						<p class="font-semibold text-xl uppercase text-purple-500 mb-1"><?= $room['room_name'] ?></p>
 						<p class="text-gray-500 mb-2">
 							<i class="fas fa-map-marker-alt"></i>
-							Trung Hoà, Cầu Giấy, Hà Nội
+							<?= $room['locaname'] ?>, Hà Nội
 						</p>
-						<p>Ngày đăng: 24/3/2021 - Lượt xem: 213 </p>
+						<p>Ngày đăng: <?= $room['create_at'] ?> - Lượt xem: 213 </p>
 
 						<div class="my-10">
 							<p class="text-2xl font-bold mb-3">Giá dịch vụ</p>
@@ -99,59 +116,39 @@
 								<div class="col-span-6 border-b">
 									<div class="flex justify-between">
 										<p>Giá điện (bao gồm điện dùng chung)</p>
-										<p>3,200₫/số</p>
+										<p><?=$room['electric']?>đ/số</p>
 									</div>
 								</div>
 								<div class="col-span-6 border-b">
 									<div class="flex justify-between">
 										<p>Giá vệ sinh</p>
-										<p>30,00₫/số</p>
+										<p><?=$room['clean']?>₫/số</p>
 									</div>
 								</div>
 								<div class="col-span-6 border-b">
 									<div class="flex justify-between">
 										<p>Giá nước</p>
-										<p>20,00₫/số</p>
-									</div>
-								</div>
-								<div class="col-span-6 border-b">
-									<div class="flex justify-between">
-										<p>Giá thang máy</p>
-										<p>50,00₫/người</p>
+										<p><?=$room['water']?>₫/số</p>
 									</div>
 								</div>
 								<div class="col-span-6 border-b">
 									<div class="flex justify-between">
 										<p>Giá Internet</p>
-										<p>50,00₫/phòng</p>
+										<p><?=$room['internet']?>₫/phòng</p>
 									</div>
 								</div>
 								<div class="col-span-6 border-b">
 									<div class="flex justify-between">
 										<p>Giá gửi xe</p>
-										<p>100,000₫/người</p>
+										<p><?=$room['parking']?>₫/người</p>
 									</div>
 								</div>
 							</div>
 						</div>
 
 						<div class="my-10">
-							<p class="text-2xl font-bold mb-3">Thông tin mô tả</p>
-							<p class="mb-2">Cho thuê phòng trọ - chung cư mini tại Số 31B, ngách 189/43 Nguyễn Ngọc Vũ, Cầu Giấy, Hà Nội.</p>
-							<p class="mb-2">Tòa nhà mã số CG011 thiết kế cao 7 tầng. Tầng 1 là khu để xe, từ tầng 2 - 7 được chia thành 22 phòng, trên tầng 7 là khu phơi đồ - giặt đồ chung miễn phí cho tòa nhà. Hàng lang lắp đặt thiết bị PCCC và camera an ninh mỗi tầng trong tòa nhà.</p>
-						</div>
-
-
-						<div class="my-10">
 							<p class="text-2xl font-bold mb-3">Tổng quan căn phòng</p>
-							<p class="mb-5">Các căn phòng được thiết kế sang trọng và thoáng mát gồm 4 cửa (1 cửa chính, 2 cửa sổ, 1 cửa ban công). Phòng ngủ thiết kế riêng biệt với phòng bếp và khu ban công, các phòng đều có views cửa rất rộng với hàng cây xanh phía trước.</p>
-
-							<p class="mb-2">✶ Diện tích căn phòng: Phòng 1 ngủ từ 35m2 - 40m2.</p>
-							<p class="mb-2">✶ Nội thất cơ bản gồm: Điều hòa, nóng lạnh, giường ngủ, tủ quần áo, rèm cửa, tủ - bàn bếp, chậu rửa, ban công.</p>
-							<p class="mb-2">✶ Chi phí điện nước: Áp dụng tính giá nhà nước (tiêu chuẩn nhà nước).</p>
-							<p class="mb-2">✶ An ninh tòa nhà: Camera theo dõi 24h; Khóa vân tay bảo mật.</p>
-							<p class="mb-2">✶ Thủ tục - giấy tờ: Hợp đồng thuê nhà, hợp đồng đặt cọc, thủ tục đăng ký tạm trú tạm vắng,... Đội ngũ Bản Đôn sẽ hỗ trợ khách hàng hoàn thành tất cả.</p>
-							<p class="mb-2">Phòng trọ phù hợp dành cho các bạn sinh viên, người đi làm và đặc biệt là hộ gia đình.</p>
+							<?= $room['summary'] ?>
 						</div>
 
 						<div class="my-10">
@@ -163,15 +160,15 @@
 					<div class="col-span-4 px-9">
 						<div class="p-5 border rounded-lg">
 							<div class="flex items-center border-b pb-3 mb-3">
-								<img src="./assets/images/users/user1.png" alt="" class="rounded-full border">
+								<img src="./assets/images/users/<?=$landlord['avatar']?>" class="w-20 h-20 rounded-full" alt="" class="rounded-full border">
 								<div class="ml-3">
-									<p class="uppercase font-semibold text-blue-400">đõ văn triều</p>
+									<p class="uppercase font-semibold text-blue-400"><?= $landlord['user_name'] ?></p>
 									<p>Chính chủ</p>
 								</div>
 							</div>
-							<p class="mb-1">Tham gia từ: 12/2020</p>
-							<p class="mb-1">Số tin đăng: 1</p>
-							<p class="mb-1">Sđt: 0328238186</p>
+							<p class="mb-1">Tham gia từ: <?= $landlord['create_at'] ?></p>
+							<p class="mb-1">Số tin đăng: <?= $landlord['sl'] ?></p>
+							<p class="mb-1">Sđt: <?= $landlord['phone'] ?></p>
 						</div>
 
 						<div class="mt-5">
@@ -314,6 +311,21 @@
 			loop: true,
 			items: 1
 		})
+
+
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; //January is 0 so need to add 1 to make it 1!
+		var yyyy = today.getFullYear();
+		if(dd<10){
+		  dd='0'+dd
+		} 
+		if(mm<10){
+		  mm='0'+mm
+		} 
+
+		today = yyyy+'-'+mm+'-'+dd;
+		document.getElementById("schedule").setAttribute("min", today);
 	</script>
 
 </body>

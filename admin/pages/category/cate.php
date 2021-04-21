@@ -5,6 +5,7 @@
   // seletc cate
   $category = cate_select();
 
+
   // delete cate
   if(isset($_GET['cate_id'])) {
     $cate_id = $_GET['cate_id'];
@@ -24,6 +25,7 @@
     $cate_name = $_POST['catename'];
     cate_insert($cate_name);
   }
+  
 ?>
 
 
