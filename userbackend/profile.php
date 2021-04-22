@@ -2,6 +2,10 @@
     session_start();
 
     require "../admin/dao/user.php";
+    if(!isset($_SESSION['user'])){
+        header("location: ../login.php");
+    }
+    
     $user = user_select_one($_SESSION['user']['user_id']);
 
     if(isset($_POST['user_update'])) {

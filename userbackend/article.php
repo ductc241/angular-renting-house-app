@@ -5,6 +5,10 @@
 
     session_start();
 
+    if(!isset($_SESSION['user'])){
+        header("location: ../login.php");
+    }
+
     $location = loca_select_all();
     $category = cate_select_all();
 
@@ -50,7 +54,7 @@
             <span class="">Phòng đã đăng</span>
         </div>
 
-        <div class="p-5 bg-white rounded-lg mt-5">
+        <div class="p-5 bg-white rounded-lg mt-5 overflow-hidden">
             <h1 class="text-xl font-semibold mb-5">Tất cả các phòng</h1>
 
             <!-- This example requires Tailwind CSS v2.0+ -->
@@ -69,6 +73,9 @@
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Status
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Show
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Start
@@ -103,13 +110,24 @@
                                                 <!-- <div class="text-sm text-gray-500">Optimization</div> -->
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">                                                
-                                                <?php if($result['status'] == 0) : ?>
+                                                <?php if($result['status'] == 1) : ?>
                                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-500 text-white">
                                                         Còn phòng
                                                     </span>
                                                 <?php else : ?>
                                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-500 text-white">
                                                         Đã hết phòng
+                                                    </span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">                                                
+                                                <?php if($result['visible'] == 1) : ?>
+                                                    <span class="px-2 text-md leading-5 font-semibold rounded-full text-blue-500">
+                                                        <i class="fas fa-eye"></i>
+                                                    </span>
+                                                <?php else : ?>
+                                                    <span class="px-2 text-md leading-5 font-semibold rounded-full text-blue-500">
+                                                        <i class="fas fa-eye-slash"></i>
                                                     </span>
                                                 <?php endif; ?>
                                             </td>
@@ -120,7 +138,7 @@
                                                 <div class="text-sm text-gray-900"><?= $result['day_end'] ?></div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                                <a href="edit.php?id=<?=$result['room_id']?>" class="text-indigo-600 hover:text-indigo-900">Edit</a>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <a href="#" class="text-red-600 hover:text-red-900">Delete</a>

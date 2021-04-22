@@ -3,6 +3,10 @@
 	require "../admin/dao/notify.php";
 	session_start();
 
+	if(!isset($_SESSION['user'])){
+        header("location: ../login.php");
+    }
+
 	// $notify = notify_select($_SESSION['user']['user_id']);
 	$notify_cencored = notify_cencored($_SESSION['user']['user_id']);
 	$notify_view = notify_view($_SESSION['user']['user_id']);

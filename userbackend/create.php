@@ -5,6 +5,10 @@
 
     session_start();
 
+    if(!isset($_SESSION['user'])){
+        header("location: ../login.php");
+    }
+
     $location = loca_select_all();
     $category = cate_select_all();
 

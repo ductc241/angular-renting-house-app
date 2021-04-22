@@ -6,10 +6,26 @@
 	require_once "./admin/dao/room.php";
 	require_once "./admin/dao/user.php";
 
-	$user =  user_select_one($_SESSION['user']['user_id']);
+	
 	$category = cate_select();
 	$location = loca_select();
-	$rooms = room_select();
+	
+	if(isset($_GET['cate'])){
+		$cate_id = $_GET['cate'];
+		$rooms = room_select_cate($cate_id);
+	}else if(isset($_GET['loca'])){
+		$loca_id = $_GET['loca'];
+		$rooms = room_select_loca($loca_id);
+	}else{
+		$rooms = room_select();
+	}
+
+
+	if(isset($_SESSION['user'])){
+		$user =  user_select_one($_SESSION['user']['user_id']);
+	}
+
+
 
 ?>
 
@@ -53,7 +69,7 @@
 						<ul class="shop_option">
 							<?php foreach ($category as $cate) : ?>
 								<li class="flex justify-between mb-2">
-									<a href="#"><?= $cate['cate_name'] ?></a>
+									<a href="./shop.php?cate=<?=$cate['cate_id']?>"><?= $cate['cate_name'] ?></a>
 									<span class="text-blue-400"><?= $cate['quantity'] ?></span>
 								</li>
 							<?php endforeach ; ?>
@@ -65,7 +81,7 @@
 						<ul class="shop_option">
 							<?php foreach ($location as $loca) : ?>
 								<li class="flex justify-between mb-2">
-									<a href="#"><?= $loca['loca_name'] ?></a>
+									<a href="./shop.php?loca=<?=$loca['loca_id']?>"><?= $loca['loca_name'] ?></a>
 									<span class="text-blue-400"><?= $loca['quantity'] ?></span>
 								</li>
 							<?php endforeach ; ?>
@@ -92,7 +108,7 @@
 				</div>
 
 				<div class="col-span-9">
-					<div class="shop_filter">
+					<!-- <div class="shop_filter">
 						<div class="grid grid-cols-12 gap-10">
 							<div class="col-span-3 mb-10 w-full">
 								<select name="" id="">
@@ -114,12 +130,17 @@
 								</select>
 							</div>
 						</div>
-					</div>
+					</div> -->
 
 
 					<div class="grid grid-cols-12 gap-10">
 						<?php foreach ($rooms as $room) : ?>
-							<div class="col-span-4 rounded-xl bg-white">
+							<div class="col-span-4 rounded-xl bg-white relative">
+								<?php if($room['status'] == 0) : ?>
+									<div class="absolute bg-red-500 p-2 top-5">
+										<span class="text-white">Hết Phòng</span>
+									</div>
+								<?php endif; ?>
 								<img src="./assets/images/product/<?= $room['image'] ?>" alt="" class="rounded-t-lg">
 								<div class="product_infor">
 									<a href="./detail.php?id=<?= $room['room_id'] ?>" title="<?= $room['room_name'] ?>"><?= $room['room_name'] ?></a>

@@ -1,14 +1,36 @@
 <?php 
   	require "./admin/dao/user.php";
+  	require "./admin/dao/room.php";
+  	require_once "./admin/dao/category.php";
+	require_once "./admin/dao/location.php";
+
 	session_start();
 
+	$rooms = room_select();
+	$category = cate_select();
+	$location = loca_select();
+
 	if(isset($_GET['logout'])) {
-    	session_destroy();
+    	 unset($_SESSION['user']);
     	header('location:./index.php');
  	}
 
  	if(isset($_SESSION['user'])){
  		$user =  user_select_one($_SESSION['user']['user_id']);
+ 	}
+
+ 	if(isset($_POST['search'])){
+ 		if(isset($_POST['cate'])){
+ 			$cate = $_POST['cate'];
+ 		};
+ 		if(isset($_POST['loca'])){
+ 			$loca = $_POST['loca'];
+ 		};
+ 		if(isset($_POST['price'])){
+ 			$price = $_POST['price'];
+ 		};
+
+ 		header('location:./shop.php?cate=' . $cate);
  	}
 ?>
 
@@ -53,22 +75,29 @@
 
 				<div class="feature_option">
 					<p class="text-2xl font-semibold text-gray-500">Tìm Kiếm Nhanh</p>
-					<form action="#">				
-						<!-- <input type="text" placeholder="Nhập từ khóa ...."> -->
+					<form action="#" method="POST">				
+						<select name="cate">
+							<option value="">Kiểu phòng</option>
+							<?php foreach ($category as $cate) : ?>
+								<option value="<?= $cate['cate_id'] ?>"><?= $cate['cate_name'] ?></option>
+							<?php endforeach ; ?>
+						</select>
 
-						<select>
+						<select name="loca">
 							<option value="">Vị trí</option>
+							<?php foreach ($location as $loca) : ?>
+								<option value="<?= $loca['loca_id'] ?>"><?= $loca['loca_name'] ?></option>
+							<?php endforeach ; ?>
 						</select>
 
-						<select>
-							<option value="">Diện tích</option>
-						</select>
-
-						<select>
+						<select name="price">
 							<option value="">Giá tiền</option>
+							<option value="1">1 Triệu - 3 Triệu</option>
+							<option value="3">3 Triệu - 5 Triệu</option>
+							<option value="5">5 Triệu - 7 Triệu</option>
+							<option value="7">Trên 7 Triệu</option>
 						</select>
-
-						<input type="submit" value="Search">
+						<input type="submit" value="Search" name="search">
 					</form>
 				</div>
 			</div>
@@ -82,133 +111,28 @@
 			</div>
 
 			<div class="grid grid-cols-12 gap-10">
-				<div class="col-span-3 rounded-xl bg-white">
-					<img src="./assets/images/trending/trend1.jpg" alt="" class="rounded-t-lg">
-					<div class="product_infor">
-						<a href="#" title="phòng trọ - chung cư mini (ccmn) tại Số 12, ngõ 127 An Trạch, Đống Đa, Hà Nội.">phòng trọ - chung cư mini (ccmn) tại Số 12, ngõ 127 An Trạch, Đống Đa, Hà Nội.</a>
-						<p><span class="font-semibold">Giá thuê: </span>4,000,000đ / tháng</p>
-						<p><span class="font-semibold">Loại: </span>Chung cư mini</p>
-						<p><span class="font-semibold">Diện tích: </span>30m2</p>
-						<p><span class="font-semibold">Vị trí: </span>Quận Thanh Xuân, TP Hà Nội</p>
-						<hr class="mt-2">
-						<div class="product_infor-footer">
-							<p>Ngày đăng: 24/3/2021</p>
-							<p>View: 513</p>
+				<?php foreach ($rooms as $room) : ?>
+					<div class="col-span-3 rounded-xl bg-white relative">
+						<?php if($room['status'] == 0) : ?>
+							<div class="absolute bg-red-500 p-2 top-5">
+								<span class="text-white">Hết Phòng</span>
+							</div>
+						<?php endif; ?>
+						<img src="./assets/images/product/<?= $room['image'] ?>" alt="" class="rounded-t-lg">
+						<div class="product_infor">
+							<a href="./detail.php?id=<?= $room['room_id'] ?>" title="<?= $room['room_name'] ?>"><?= $room['room_name'] ?></a>
+							<p><span class="font-semibold">Giá thuê: </span><?= number_format($room['price']) ?>đ / tháng</p>
+							<p><span class="font-semibold">Loại: </span><?= $room['catename'] ?></p>
+							<p><span class="font-semibold">Diện tích: </span><?= $room['area'] ?>m2</p>
+							<p><span class="font-semibold">Vị trí: </span>Quận <?= $room['locaname'] ?>, TP Hà Nội</p>
+							<hr class="mt-2">
+							<div class="product_infor-footer">
+								<p>Ngày đăng: <?= $room['create_at'] ?></p>
+								<!-- <p>View: 513</p> -->
+							</div>
 						</div>
 					</div>
-				</div>
-
-				<div class="col-span-3 rounded-xl bg-white">
-					<img src="./assets/images/trending/trend2.jpg" alt="" class="rounded-t-lg">
-					<div class="product_infor">
-						<a href="#">cho thuê chung cư mini tại quan nhân, thanh xuân</a>
-						<p><span class="font-semibold">Giá thuê: </span>4,000,000đ / tháng</p>
-						<p><span class="font-semibold">Loại: </span>Nhà trọ</p>
-						<p><span class="font-semibold">Diện tích: </span>30m2</p>
-						<p><span class="font-semibold">Vị trí: </span>Quận Thanh Xuân, TP Hà Nội</p>
-						<hr class="mt-2">
-						<div class="product_infor-footer">
-							<p>Ngày đăng: 24/3/2021</p>
-							<p>View: 513</p>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-span-3 rounded-xl bg-white">
-					<img src="./assets/images/trending/trend1.jpg" alt="" class="rounded-t-lg">
-					<div class="product_infor">
-						<a href="#">cho thuê chung cư mini tại quan nhân, thanh xuân</a>
-						<p><span class="font-semibold">Giá thuê: </span>4,000,000đ / tháng</p>
-						<p><span class="font-semibold">Loại: </span>Chung cư mini</p>
-						<p><span class="font-semibold">Diện tích: </span>30m2</p>
-						<p><span class="font-semibold">Vị trí: </span>Quận Thanh Xuân, TP Hà Nội</p>
-						<hr class="mt-2">
-						<div class="product_infor-footer">
-							<p>Ngày đăng: 24/3/2021</p>
-							<p>View: 513</p>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-span-3 rounded-xl bg-white">
-					<img src="./assets/images/trending/trend2.jpg" alt="" class="rounded-t-lg">
-					<div class="product_infor">
-						<a href="#">cho thuê chung cư mini tại quan nhân, thanh xuân</a>
-						<p><span class="font-semibold">Giá thuê: </span>4,000,000đ / tháng</p>
-						<p><span class="font-semibold">Loại: </span>Nhà trọ</p>
-						<p><span class="font-semibold">Diện tích: </span>30m2</p>
-						<p><span class="font-semibold">Vị trí: </span>Quận Thanh Xuân, TP Hà Nội</p>
-						<hr class="mt-2">
-						<div class="product_infor-footer">
-							<p>Ngày đăng: 24/3/2021</p>
-							<p>View: 513</p>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-span-3 rounded-xl bg-white">
-					<img src="./assets/images/trending/trend2.jpg" alt="" class="rounded-t-lg">
-					<div class="product_infor">
-						<a href="#">cho thuê chung cư mini tại quan nhân, thanh xuân</a>
-						<p><span class="font-semibold">Giá thuê: </span>4,000,000đ / tháng</p>
-						<p><span class="font-semibold">Loại: </span>Nhà trọ</p>
-						<p><span class="font-semibold">Diện tích: </span>30m2</p>
-						<p><span class="font-semibold">Vị trí: </span>Quận Thanh Xuân, TP Hà Nội</p>
-						<hr class="mt-2">
-						<div class="product_infor-footer">
-							<p>Ngày đăng: 24/3/2021</p>
-							<p>View: 513</p>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-span-3 rounded-xl bg-white">
-					<img src="./assets/images/trending/trend1.jpg" alt="" class="rounded-t-lg">
-					<div class="product_infor">
-						<a href="#">cho thuê chung cư mini tại quan nhân, thanh xuân</a>
-						<p><span class="font-semibold">Giá thuê: </span>4,000,000đ / tháng</p>
-						<p><span class="font-semibold">Loại: </span>Nhà trọ</p>
-						<p><span class="font-semibold">Diện tích: </span>30m2</p>
-						<p><span class="font-semibold">Vị trí: </span>Quận Thanh Xuân, TP Hà Nội</p>
-						<hr class="mt-2">
-						<div class="product_infor-footer">
-							<p>Ngày đăng: 24/3/2021</p>
-							<p>View: 513</p>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-span-3 rounded-xl bg-white">
-					<img src="./assets/images/trending/trend2.jpg" alt="" class="rounded-t-lg">
-					<div class="product_infor">
-						<a href="#">cho thuê chung cư mini tại quan nhân, thanh xuân</a>
-						<p><span class="font-semibold">Giá thuê: </span>4,000,000đ / tháng</p>
-						<p><span class="font-semibold">Loại: </span>Nhà trọ</p>
-						<p><span class="font-semibold">Diện tích: </span>30m2</p>
-						<p><span class="font-semibold">Vị trí: </span>Quận Thanh Xuân, TP Hà Nội</p>
-						<hr class="mt-2">
-						<div class="product_infor-footer">
-							<p>Ngày đăng: 24/3/2021</p>
-							<p>View: 513</p>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-span-3 rounded-xl bg-white">
-					<img src="./assets/images/trending/trend1.jpg" alt="" class="rounded-t-lg">
-					<div class="product_infor">
-						<a href="#">cho thuê chung cư mini tại quan nhân, thanh xuân</a>
-						<p><span class="font-semibold">Giá thuê: </span>4,000,000đ / tháng</p>
-						<p><span class="font-semibold">Loại: </span>Nhà trọ</p>
-						<p><span class="font-semibold">Diện tích: </span>30m2</p>
-						<p><span class="font-semibold">Vị trí: </span>Quận Thanh Xuân, TP Hà Nội</p>
-						<hr class="mt-2">
-						<div class="product_infor-footer">
-							<p>Ngày đăng: 24/3/2021</p>
-							<p>View: 513</p>
-						</div>
-					</div>
-				</div>
+				<?php endforeach ; ?>
 			</div>
 		</div>
 	</div>
@@ -292,7 +216,7 @@
 	<div class="trending_product py-16">
 		<div class="container mx-auto">
 			<div class="text-center relative mb-10">
-				<span class="main_title">phòng trọ  <span class="text-red-500 font-bold">đang sales</span></span>
+				<span class="main_title">lượt xem  <span class="text-red-500 font-bold">nhiều nhất</span></span>
 			</div>
 
 			<div class="grid grid-cols-12 gap-10">

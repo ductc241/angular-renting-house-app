@@ -5,8 +5,9 @@
 	require_once "./admin/dao/user.php";
 	require_once "./admin/dao/album.php";
 
-
-	$user =  user_select_one($_SESSION['user']['user_id']);
+	if(isset($_SESSION['user'])){
+		$user =  user_select_one($_SESSION['user']['user_id']);
+	}
 
 	if(isset($_GET['id'])){
 		$id = $_GET['id'];
@@ -59,6 +60,16 @@
 			font-weight: 500;
 			width: 100%;
 		}
+
+		ul{
+			list-style-type: disc;
+			margin-left: 40px;
+		}
+
+		#map-canvas {
+            height: 73%;
+            width: 100%;
+        }
 	</style>
 </head>
 <body>
@@ -153,7 +164,8 @@
 
 						<div class="my-10">
 							<p class="text-2xl font-bold mb-4">Vị trí phòng</p>
-							<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.810613899905!2d105.76800507529944!3d21.04026250712611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313454c7dce37431%3A0x7a3e01807c4a08f0!2zTmdoxKlhIHRyYW5nIE1haSBE4buLY2g!5e0!3m2!1svi!2s!4v1616689703841!5m2!1svi!2s" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+							<iframe src="https://maps.google.com/maps?q=<?=$room['latitude']?>, <?=$room['longitude']?>&z=15&output=embed" width="100%" height="450" frameborder="0" style="border:0"></iframe>
+
 						</div>
 					</div>
 
@@ -301,6 +313,7 @@
 
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script src="./assets/owlcarousel/owl.carousel.min.js"></script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA66KwUrjxcFG5u0exynlJ45CrbrNe3hEc&libraries=places&callback=initialize"></script>
 
 	<script>
 		$('.owl-carousel').owlCarousel({

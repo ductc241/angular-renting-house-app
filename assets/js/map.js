@@ -7,12 +7,14 @@ function initialize() {
 		longEl = document.querySelector( '.longitude' ),
 		element = document.getElementById( 'map-canvas' );
 		city = document.querySelector( '.reg-input-city' );
+		lat =  document.querySelector( '.latitude' ).value;
+		long =  document.querySelector( '.longitude' ).value;
 
 	mapOptions = {
 		// How far the maps zooms in.
 		zoom: 14,
 		// Current Lat and Long position of the pin/
-		center: new google.maps.LatLng( 21.027404472383708, 105.83387371015627 ),
+		center: new google.maps.LatLng( lat, long ),
 		// center : {
 		// 	lat: -34.397,
 		// 	lng: 150.644
@@ -112,7 +114,7 @@ function initialize() {
 		geocoder.geocode( { latLng: marker.getPosition() }, function ( result, status ) {
 			if ( 'OK' === status ) {  // This line can also be written like if ( status == google.maps.GeocoderStatus.OK ) {
 				address = result[0].formatted_address;
-				resultArray =  result[0].address_components;
+				// resultArray =  result[0].address_components;
 
 				// Get the city and set the city input value to the one selected
 				// for( var i = 0; i < resultArray.length; i++ ) {

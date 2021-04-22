@@ -10,7 +10,7 @@
 	function schedule_notify($date, $landlords, $user_id, $room_id){
 		$msg = 'Bạn đã đặt lịch xem phòng này vào ' . $date;
 		$msg1 = 'Có người đã đặt lịch xem phòng này vào ngày ' . $date;
-		$sql = "INSERT INTO notify SET landlords = $landlords, renter = $user_id, room_id = $room_id, message = '$msg'";
+		$sql = "INSERT INTO notify SET renter = $user_id, room_id = $room_id, message = '$msg'";
 		$sql1 = "INSERT INTO notify SET landlords = $landlords, renter = $user_id, room_id = $room_id, message = '$msg1'";
 		pdo_execute($sql);
 		pdo_execute($sql1);

@@ -47,17 +47,17 @@
 					</div>
 					<div class="mt-6">
 						<label for="" class="text-gray-600">Phone</label>
-						<input type="text" name="phone" class="w-full border rounded p-2 outline-none">
+						<input type="text" name="phone" class="w-full border rounded p-2 outline-none" required>
 					</div>
 
 					<p class="capitalize text-lg font-medium pt-6">sign-in information</p>
 					<div class="mt-6">
 						<label for="" class="text-gray-600">Username</label>
-						<input type="text" name="user_name" class="w-full border rounded p-2 outline-none">
+						<input type="text" name="user_name" class="w-full border rounded p-2 outline-none" required>
 					</div>
 					<div class="mt-6">
 						<label for="" class="text-gray-600">Password</label>
-						<input type="password" name="password" class="w-full border rounded p-2 outline-none">
+						<input type="password" name="password" class="w-full border rounded p-2 outline-none" required>
 					</div>
 					<div class="mt-6">
 						<label for="" class="text-gray-600">Confirm Password</label>

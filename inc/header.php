@@ -7,7 +7,7 @@
 					<ul class="tool_links">
 						<li><a href="index.php">Trang chủ</a></li>
 						<li><a href="shop.php">Thuê nhà trọ</a></li>
-						<li><a href="detail.php">Tin tức</a></li>
+						<li><a href="">Tin tức</a></li>
 						<li><a href="#">Liên hệ</a></li>
 					</ul>
 				</div>
@@ -28,8 +28,12 @@
 								<a href="./userbackend/create.php">Đăng tin</a>
 							</li>
 							<li>
+								<i class="fas fa-bell" style="margin-right: 7px;"></i>
+								<a href="./userbackend/notification.php">Thông báo</a>
+							</li>
+							<li>
 								<i class="fas fa-user" style="margin-right: 7px;"></i>
-								<a href="./userbackend/notification.php">Trang cá nhân</a>
+								<a href="./userbackend/profile.php">Trang cá nhân</a>
 							</li>
 							<li>
 								<i class="fas fa-sign-out-alt" style="margin-right: 7px;"></i>
